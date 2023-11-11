@@ -12,34 +12,54 @@
                 $dbpass = '';
                 $mysqli = new mysqli($dbhost, $dbuser, $dbpass);
 
-                if($mysqli->connect_errno ){
-                    printf("Conncet failed: %s<br> />", $mysqli->connect_error);
+            //Connection
+
+                if($mysqli->connect_errno) {
+                    printf("Failed to Connect: %s<br />", $mysqli->connect_error);
                     exit();
                 }
                 printf('Connected successfully.<br />');
-                
-                if($mysqli->query("CREATE DATABASE ARCHONS")){
+
+            //Create Database
+            
+               /* if ($mysqli->query("CREATE DATABASE ARCHONS")) {
                     printf("Database ARCHONS created successfully.<br />");
                 }
-                if($mysqli->errno){
+                if ($mysqli->errno) {
                     printf("Failed to create database: %s<br />", $mysqli->error);
-                }
+                }*/
                 
-                $gods = "CREATE TABLE Usurper(".
-                                        "usurper_id INT NOT NULL AUTO_INCREMENT, ".
-                                        "element_resonance VARCHAR(100) NOT NULL, ".
-                                        "archon_title VARCHAR(100) NOT NULL, ".
-                                        "PRIMARY KEY ( usurper_id )); ";
-                if ($mysqli->query($sql)){
-                    printf("Table ARCHONS created successfully.<br />");
+
+
+            //Select Database
+                $conn = mysqli_connect($dbhost, $dbuser, $dbpass);
+
+                if(! $conn ) {
+                    die('Could not connect: ' . mysqli_error($conn));
                 }
-                if ($mysqli->errno){
-                    printf("Failed to create table: %s<br />", $mysqli->error);
+                echo 'Connected successfully<br />';
+                $retval = mysqli_select_db( $conn, 'ARCHONS' );
+                if(! $retval ) {
+                    die('Could not select database: ' . mysqli_error($conn));
                 }
-                
-                
-                $mysqli->close();
-            
+                echo "Database ARCHONS selected successfully\n";
+                mysqli_close($conn);
+
+            //Create Table
+                $sql = "CREATE TABLE userpur_tbl( ".
+                "userpur_id INT NOT NULL AUTO_INCREMENT, ".
+                "userpur_title VARCHAR(100) NOT NULL, ".
+                "userpus_name VARCHAR(40) NOT NULL, ".
+                "PRIMARY KEY ( userpur_id )); ";
+            if ($mysqli->query($sql)) {
+                printf("Table userpur_tbl created successfully.<br />");
+            }
+            if ($mysqli->errno) {
+                printf("Could not create table: %s<br />", $mysqli->error);
+            }
+
+            $mysqli->close();
+
             ?>
 
 
